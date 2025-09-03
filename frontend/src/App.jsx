@@ -69,6 +69,8 @@ import AuthLayout from './components/layout/AuthLayout';
 import DashboardLayout from './components/layout/DashboardLayout';
 import ProtectedRoute from './components/layout/ProtectedRoute';
 import TermsPage from './pages/TermsPage';
+import PredictionsListPage from './pages/PredictionsListPage';
+import ModelInputsForm from './pages/MedPredict';
 
 function App() {
   return (
@@ -97,9 +99,30 @@ function App() {
           </ProtectedRoute>
         }
       >
+       
         <Route index element={<DashboardPage />} />
+        
       </Route>
-
+ <Route
+            path="/predictions"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <PredictionsListPage />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
+           <Route
+            path="/med-predict"
+            element={
+              <ProtectedRoute>
+                <DashboardLayout>
+                  <ModelInputsForm />
+                </DashboardLayout>
+              </ProtectedRoute>
+            }
+          />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

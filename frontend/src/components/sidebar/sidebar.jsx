@@ -199,11 +199,31 @@ function Sidebar() {
               <span>Dashboard</span>
             </NavLink>
           </li>
+           <li>
+            <NavLink
+              to="/med-predict"
+              className={({ isActive }) =>
+                `${linkClasses} ${isActive ? activeLinkClasses : ""}`
+              }
+            >
+              <FaChartBar  className="mr-3" />
+              <span>Make Prediction</span>
+            </NavLink>
+          </li>
           <li>
-            <NavLink to="/predictions" className={({ isActive }) => `${linkClasses} ${isActive ? activeLinkClasses : ''}`}>
+            {/* <NavLink to="/predictions" className={({ isActive }) => `${linkClasses} ${isActive ? activeLinkClasses : ''}`}>
               <FaChartBar className="mr-3" />
               <span>Predictions</span>
-            </NavLink>
+            </NavLink> */}
+            <NavLink
+    to="/predictions"
+    className={({ isActive }) =>
+      `${linkClasses} ${isActive ? activeLinkClasses : ''}`
+    }
+  >
+    <FaChartBar className="mr-3" />
+    <span>Prediction History</span>
+  </NavLink>
           </li>
           <li>
             <NavLink to="/settings" className={({ isActive }) => `${linkClasses} ${isActive ? activeLinkClasses : ''}`}>

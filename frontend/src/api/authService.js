@@ -14,6 +14,9 @@ export const verifyResetCode = (data) => api.post('/verify-reset-code', data);
 export const resetPassword = (data) => api.post('/reset-password', data);
 export const getPrediction = (deviceData) => api.post('/api/predict', { deviceData });
 export const getLatestPrediction = () => api.get('/api/predict/latest');
+export const getAllPredictions = () => api.get('/api/predictAll');
+export const predict = async (data) => api.post('api/predict', data); 
+
 
 
 export default api;

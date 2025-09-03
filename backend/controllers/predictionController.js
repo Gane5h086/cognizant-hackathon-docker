@@ -66,3 +66,15 @@ export const getLatestPrediction = async (req, res, next) => {
     return next(new ApiError(500, error.message));
   }
 };
+
+export const getAllPredictions = async (req, res, next) => {
+    try {
+        const predictions = await Prediction.find().sort({ createdAt: -1 });
+        if (!predictions) {
+            return next(new ApiError(404, "No predictions found."));
+        }
+        res.status(200).json(new ApiResponse(200, predictions, "All predictions fetched successfully."));
+    } catch (error) {
+        return next(new ApiError(500, error.message));
+    }
+};

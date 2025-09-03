@@ -9,7 +9,7 @@
 // export default router;
 
 import express from "express";
-import { createPrediction, getLatestPrediction } from "../controllers/predictionController.js";
+import { createPrediction, getAllPredictions, getLatestPrediction } from "../controllers/predictionController.js";
 
 const router = express.Router();
 
@@ -18,5 +18,8 @@ router.post("/predict", createPrediction);
 
 // Route will be GET /api/predict/latest
 router.get("/predict/latest", getLatestPrediction);
+
+router.get("/predictAll", getAllPredictions);
+
 
 export default router;
