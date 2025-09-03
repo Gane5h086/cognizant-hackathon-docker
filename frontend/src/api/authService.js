@@ -12,5 +12,8 @@ export const verifyEmail = (token) => api.get(`/verify-email?token=${token}`);
 export const forgotPassword = (data) => api.post('/forgot-password', data);
 export const verifyResetCode = (data) => api.post('/verify-reset-code', data);
 export const resetPassword = (data) => api.post('/reset-password', data);
+export const getPrediction = (deviceData) => api.post('/api/predict', { deviceData });
+export const getLatestPrediction = () => api.get('/api/predict/latest');
+
 
 export default api;
