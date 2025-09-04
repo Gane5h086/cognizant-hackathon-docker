@@ -41,6 +41,29 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: undefined,
   },
+
+      location: {
+      type: String,
+      default: '',
+    },
+    phone: {
+      type: String,
+      default: '',
+    },
+    dob: {
+      type: String,
+      default: '',
+    },
+    gender: {
+      type: String,
+      default: '',
+    },
+    organization: {
+      name: { type: String, default: '' },
+      website: { type: String, default: '' },
+      description: { type: String, default: '' },
+      address: { type: String, default: '' },
+    },
 });
 
 export default mongoose.model("User", userSchema);

@@ -256,8 +256,212 @@ export const signin = async (req, res, next) => {
       process.env.SECRET_KEY,
       { expiresIn: "1d" }
     );
+ 
+
     res.status(200).json(new ApiResponse(200, { user: existingUser, token }));
+    
+
   } catch (error) {
     next(new ApiError(500, "Error in signin controller", [error.message]));
+  }
+};
+
+
+// // ... existing code ...
+// export const getUserProfile = async (req, res) => {
+//   try {
+//     const user = await User.findById(req.user.id).select('-password');
+//     if (user) {
+//       res.json(user);
+//     } else {
+//       res.status(404).json({ message: 'User not found' });
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// };
+
+// /**
+//  * @desc    Update user profile
+//  * @route   PUT /api/users/profile
+//  * @access  Private
+//  */
+// export const updateUserProfile = async (req, res) => {
+//   try {
+//     const user = await User.findById(req.user.id);
+
+//     if (user) {
+//       user.firstName = req.body.firstName || user.firstName;
+//       user.lastName = req.body.lastName || user.lastName;
+//       user.location = req.body.location || user.location;
+//       user.phone = req.body.phone || user.phone;
+//       user.dob = req.body.dob || user.dob;
+//       user.gender = req.body.gender || user.gender;
+
+//       if (req.body.organization) {
+//         user.organization.name = req.body.organization.name || user.organization.name;
+//         user.organization.website = req.body.organization.website || user.organization.website;
+//         user.organization.description = req.body.organization.description || user.organization.description;
+//         user.organization.address = req.body.organization.address || user.organization.address;
+//       }
+
+//       const updatedUser = await user.save();
+
+//       res.json({
+//         _id: updatedUser._id,
+//         firstName: updatedUser.firstName,
+//         lastName: updatedUser.lastName,
+//         email: updatedUser.email,
+//         location: updatedUser.location,
+//         phone: updatedUser.phone,
+//         dob: updatedUser.dob,
+//         gender: updatedUser.gender,
+//         organization: updatedUser.organization,
+//       });
+//     } else {
+//       res.status(404).json({ message: 'User not found' });
+//     }
+//   } catch (error) {
+//     res.status(500).json({ message: 'Server error' });
+//   }
+// };
+
+
+// export const getUserProfile = async (req, res) => {
+//   try {
+//     // get token from Authorization header
+//     const authHeader = req.headers.authorization;
+//     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+//       return res.status(401).json({ message: "Not authorized, no token" });
+//     }
+
+//     const token = authHeader.split(" ")[1];
+//     const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+//     const user = await User.findById(decoded.id).select("-password");
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.json(user);
+//   } catch (error) {
+//     res.status(500).json({ message: "Server error", error: error.message });
+//   }
+// };
+
+// // --- UPDATE USER PROFILE ---
+// export const updateUserProfile = async (req, res) => {
+//   try {
+//     const authHeader = req.headers.authorization;
+//     if (!authHeader || !authHeader.startsWith("Bearer ")) {
+//       return res.status(401).json({ message: "Not authorized, no token" });
+//     }
+
+//     const token = authHeader.split(" ")[1];
+//     const decoded = jwt.verify(token, process.env.SECRET_KEY);
+
+//     const user = await User.findById(decoded.id);
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     // update fields
+//     user.firstName = req.body.firstName || user.firstName;
+//     user.lastName = req.body.lastName || user.lastName;
+//     user.location = req.body.location || user.location;
+//     user.phone = req.body.phone || user.phone;
+//     user.dob = req.body.dob || user.dob;
+//     user.gender = req.body.gender || user.gender;
+
+//     if (req.body.organization) {
+//       user.organization.name = req.body.organization.name || user.organization.name;
+//       user.organization.website = req.body.organization.website || user.organization.website;
+//       user.organization.description = req.body.organization.description || user.organization.description;
+//       user.organization.address = req.body.organization.address || user.organization.address;
+//     }
+
+//     const updatedUser = await user.save();
+
+//     res.json({
+//       _id: updatedUser._id,
+//       firstName: updatedUser.firstName,
+//       lastName: updatedUser.lastName,
+//       email: updatedUser.email,
+//       location: updatedUser.location,
+//       phone: updatedUser.phone,
+//       dob: updatedUser.dob,
+//       gender: updatedUser.gender,
+//       organization: updatedUser.organization,
+//     });
+//   } catch (error) {
+//     res.status(500).json({ message: "Server error", error: error.message });
+//   }
+// };
+
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const { id } = req.query;
+
+    if (!id) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const user = await User.findById(id).select("-password");
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.json(user);
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+export const updateUserProfile = async (req, res) => {
+  try {
+    const { id } = req.query;
+
+    if (!id) {
+      return res.status(400).json({ message: "User ID is required" });
+    }
+
+    const user = await User.findById(id);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    // Update fields
+    user.firstName = req.body.firstName || user.firstName;
+    user.lastName = req.body.lastName || user.lastName;
+    user.location = req.body.location || user.location;
+    user.phone = req.body.phone || user.phone;
+    user.dob = req.body.dob || user.dob;
+    user.gender = req.body.gender || user.gender;
+
+    // Update organization if provided
+    if (req.body.organization) {
+      user.organization = {
+        ...user.organization,
+        ...req.body.organization
+      };
+    }
+
+    const updatedUser = await user.save();
+
+    res.json({
+      _id: updatedUser._id,
+      firstName: updatedUser.firstName,
+      lastName: updatedUser.lastName,
+      email: updatedUser.email,
+      location: updatedUser.location,
+      phone: updatedUser.phone,
+      dob: updatedUser.dob,
+      gender: updatedUser.gender,
+      organization: updatedUser.organization,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error: error.message });
   }
 };

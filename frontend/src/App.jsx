@@ -71,6 +71,7 @@ import ProtectedRoute from './components/layout/ProtectedRoute';
 import TermsPage from './pages/TermsPage';
 import PredictionsListPage from './pages/PredictionsListPage';
 import ModelInputsForm from './pages/MedPredict';
+import AccountSettings from './pages/AccountSettings';
 
 function App() {
   return (
@@ -123,6 +124,17 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+  <Route
+          path="/account-settings"
+          element={
+            <ProtectedRoute>
+              <DashboardLayout>
+                <AccountSettings />
+              </DashboardLayout>
+            </ProtectedRoute>
+          }
+        />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
