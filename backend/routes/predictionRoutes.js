@@ -9,7 +9,7 @@
 // export default router;
 
 import express from "express";
-import { createPrediction, getAllPredictions, getLatestPrediction } from "../controllers/predictionController.js";
+import { createPrediction, getAllPredictions, getLatestPrediction, getPredictionByDeviceId } from "../controllers/predictionController.js";
 
 const router = express.Router();
 
@@ -20,6 +20,8 @@ router.post("/predict", createPrediction);
 router.get("/predict/latest", getLatestPrediction);
 
 router.get("/predictAll", getAllPredictions);
+
+router.get('/device/:deviceId', getPredictionByDeviceId);
 
 
 export default router;

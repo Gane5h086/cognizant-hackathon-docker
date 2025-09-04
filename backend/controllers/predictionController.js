@@ -78,3 +78,16 @@ export const getAllPredictions = async (req, res, next) => {
         return next(new ApiError(500, error.message));
     }
 };
+
+export const getPredictionByDeviceId = async (req, res, next) => {
+    try {
+        const { deviceId } = req.params;
+        const prediction = await Prediction.findOne({ "inputData.device_id": deviceId }).sort({ createdAt: -1 });
+        if (!prediction) {
+            return next(new ApiError(404, "No prediction found for this device ID."));
+        }
+        res.status(200).json(new ApiResponse(200, prediction, "Prediction fetched successfully by device ID."));
+    } catch (error) {
+        return next(new ApiError(500, error.message));
+    }
+};

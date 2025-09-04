@@ -191,7 +191,7 @@ const Section = ({ icon, title, children }) => (
 );
 
 const TermsPage = () => (
-  <div className="flex flex-col min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 font-sans">
+  <div className="flex flex-col min-h-screen  bg-[#e9ecef] font-sans">
     <main className="flex-grow container mx-auto p-4 sm:p-6 md:p-10">
       <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 border border-gray-100">
         {/* Header */}

@@ -599,7 +599,7 @@ function ModelInputsForm() {
   }
 
   return (
-    <div className="p-4 sm:p-6 md:p-8 lg:p-10">
+    <div className="p-4 bg-[#e9ecef] sm:p-6 md:p-8 lg:p-10">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
