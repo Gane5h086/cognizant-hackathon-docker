@@ -539,7 +539,7 @@ import { getPrediction } from "../api/authService"; // Changed to getPrediction
 
 const DEFAULT_INPUTS = {
   age_months: 36,
-  usage_hours_per_day: 8,
+//   usage_hours_per_day: 8,
   operational_hours: 12400,
   temperature_avg: 22,
   humidity: 48,
@@ -570,7 +570,7 @@ function ModelInputsForm() {
   function handleClear() {
     setInputs({
       age_months: "",
-      usage_hours_per_day: "",
+    //   usage_hours_per_day: "",
       operational_hours: "",
       temperature_avg: "",
       humidity: "",
@@ -642,7 +642,7 @@ function ModelInputsForm() {
             </div>
 
             {/* Usage Hours/Day */}
-            <div>
+            {/* <div>
               <label className="block text-sm font-medium text-gray-700">
                 Usage Hours/Day
               </label>
@@ -654,7 +654,7 @@ function ModelInputsForm() {
                 value={inputs.usage_hours_per_day}
                 onChange={handleChange}
               />
-            </div>
+            </div> */}
 
             {/* Operational Hours */}
             <div>
@@ -776,7 +776,7 @@ function ModelInputsForm() {
                 <option value="MRI">MRI</option>
                 <option value="Ultrasound">Ultrasound</option>
                 <option value="Ventilator">Ventilator</option>
-                <option value="X-ray">X-ray</option>
+                <option value="X-Ray">X-Ray</option>
                 <option value="Dialysis">Dialysis</option>
               </select>
             </div>
