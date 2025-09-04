@@ -536,6 +536,7 @@
 
 import React, { useState } from "react";
 import { getPrediction } from "../api/authService"; // Changed to getPrediction
+import { useNavigate } from "react-router-dom";
 
 const DEFAULT_INPUTS = {
   age_months: 36,
@@ -583,13 +584,16 @@ function ModelInputsForm() {
     setPrediction(null);
     setError(null);
   }
-
+const navigate = useNavigate();
   async function handleRunPrediction() {
+    
     setIsLoading(true);
     setError(null);
     try {
       const response = await getPrediction(inputs);
       setPrediction(response.data); // Store response
+      navigate("/dashboard");
+      
     } catch (error) {
       setError("Failed to get prediction. Please try again.");
       console.error("Prediction error:", error);

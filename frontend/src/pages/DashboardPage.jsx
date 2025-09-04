@@ -1801,25 +1801,260 @@ function Dashboard() {
     }));
   }, [dashboardData.failureProbability]);
 
-  const generatePDF = () => {
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text("MedPredict Maintenance Report", 14, 20);
-    doc.setFontSize(12);
-    doc.text(`Organization: ${dashboardData.org}`, 14, 30);
-    doc.text(`Failure Probability (30 days): ${dashboardData.failureProbability}%`, 14, 38);
-    doc.text(`Confidence: ${dashboardData.confidence}%`, 14, 46);
-    doc.text(`Maintenance Recommendation: ${dashboardData.maintenance.recommendation}`, 14, 54);
-    doc.text(`Maintenance Priority: ${dashboardData.maintenance.priority}`, 14, 62);
+  // const generatePDF = () => {
+  //   const doc = new jsPDF();
+  //   doc.setFontSize(16);
+  //   doc.text("MedPredict Maintenance Report", 14, 20);
+  //   doc.setFontSize(12);
+  //   doc.text(`Organization: ${dashboardData.org}`, 14, 30);
+  //   doc.text(`Failure Probability (30 days): ${dashboardData.failureProbability}%`, 14, 38);
+  //   doc.text(`Confidence: ${dashboardData.confidence}%`, 14, 46);
+  //   doc.text(`Maintenance Recommendation: ${dashboardData.maintenance.recommendation}`, 14, 54);
+  //   doc.text(`Maintenance Priority: ${dashboardData.maintenance.priority}`, 14, 62);
     
-    autoTable(doc, {
-      startY: 70,
-      head: [["Parameter", "Value"]],
-      body: Object.entries(dashboardData.inputSnapshot),
-    });
+  //   autoTable(doc, {
+  //     startY: 70,
+  //     head: [["Parameter", "Value"]],
+  //     body: Object.entries(dashboardData.inputSnapshot),
+  //   });
 
-    doc.save("MedPredict_Report.pdf");
-  };
+  //   doc.save("MedPredict_Report.pdf");
+  // };
+
+  const generatePDF = () => {
+  const doc = new jsPDF();
+  const pageWidth = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin = 15;
+  const contentWidth = pageWidth - 2 * margin;
+  
+  // Add decorative header
+  doc.setFillColor(31, 58, 147);
+  doc.rect(0, 0, pageWidth, 60, 'F');
+  
+  // Add title
+  doc.setFontSize(22);
+  doc.setTextColor(255, 255, 255);
+  doc.text("MEDPREDICT MAINTENANCE REPORT", pageWidth / 2, 35, { align: 'center' });
+  
+  // Add subtitle
+  doc.setFontSize(12);
+  doc.setTextColor(200, 200, 255);
+  doc.text("AI-Powered Equipment Failure Prediction", pageWidth / 2, 45, { align: 'center' });
+  
+  // Add report metadata
+  doc.setFontSize(10);
+  doc.setTextColor(100, 100, 100);
+  doc.text(`Report generated: ${new Date().toLocaleDateString()} ${new Date().toLocaleTimeString()}`, margin, 75);
+  doc.text(`Organization: ${dashboardData.org}`, margin, 82);
+  
+  // Risk overview section
+  doc.setFontSize(16);
+  doc.setTextColor(31, 58, 147);
+  doc.text("RISK OVERVIEW", margin, 100);
+  
+  doc.setDrawColor(200, 200, 200);
+  doc.line(margin, 103, margin + 60, 103);
+  
+  // Create risk indicator
+  const riskLevel = dashboardData.failureProbability;
+  let riskColor;
+  let riskText;
+  
+  if (riskLevel >= 80) {
+    riskColor = [220, 53, 69]; // red
+    riskText = "HIGH RISK";
+  } else if (riskLevel >= 50) {
+    riskColor = [255, 193, 7]; // yellow
+    riskText = "MEDIUM RISK";
+  } else {
+    riskColor = [40, 167, 69]; // green
+    riskText = "LOW RISK";
+  }
+  
+  // Risk percentage box
+  doc.setFillColor(riskColor[0], riskColor[1], riskColor[2]);
+  doc.roundedRect(margin, 110, 40, 40, 3, 3, 'F');
+  
+  doc.setFontSize(18);
+  doc.setTextColor(255, 255, 255);
+  doc.text(`${riskLevel}%`, margin + 20, 133, { align: 'center' });
+  
+  doc.setFontSize(10);
+  doc.text("Failure Probability", margin + 20, 140, { align: 'center' });
+  
+  // Risk level text
+  doc.setFontSize(14);
+  doc.setTextColor(riskColor[0], riskColor[1], riskColor[2]);
+  doc.text(riskText, margin + 50, 120);
+  
+  doc.setFontSize(11);
+  doc.setTextColor(100, 100, 100);
+  doc.text(dashboardData.maintenance.priorityDesc, margin + 50, 130);
+  
+  // Visual risk meter
+  const meterWidth = contentWidth - 50;
+  const meterHeight = 10;
+  const meterX = margin + 50;
+  const meterY = 145;
+  
+  // Background
+  doc.setFillColor(240, 240, 240);
+  doc.roundedRect(meterX, meterY, meterWidth, meterHeight, 2, 2, 'F');
+  
+  // Fill based on risk level
+  doc.setFillColor(riskColor[0], riskColor[1], riskColor[2]);
+  doc.roundedRect(meterX, meterY, (riskLevel / 100) * meterWidth, meterHeight, 2, 2, 'F');
+  
+  // Meter labels
+  doc.setFontSize(8);
+  doc.setTextColor(100, 100, 100);
+  doc.text("Low", meterX, meterY + 20);
+  doc.text("Medium", meterX + meterWidth / 2 - 10, meterY + 20);
+  doc.text("High", meterX + meterWidth - 10, meterY + 20);
+  
+  // Maintenance recommendation section
+  const recommendationY = meterY + 40;
+  doc.setFontSize(16);
+  doc.setTextColor(31, 58, 147);
+  doc.text("MAINTENANCE RECOMMENDATION", margin, recommendationY);
+  doc.setDrawColor(200, 200, 200);
+  doc.line(margin, recommendationY + 3, margin + 140, recommendationY + 3);
+  
+  doc.setFontSize(12);
+  doc.setTextColor(80, 80, 80);
+  
+  // Wrap text for recommendation
+  const recommendation = dashboardData.maintenance.recommendation;
+  const splitText = doc.splitTextToSize(recommendation, contentWidth - 10);
+  doc.text(splitText, margin, recommendationY + 20);
+  
+  // Action items based on risk level
+  const actionItemsY = recommendationY + 20 + (splitText.length * 6) + 10;
+  doc.setFontSize(14);
+  doc.setTextColor(31, 58, 147);
+  doc.text("RECOMMENDED ACTIONS", margin, actionItemsY);
+  doc.setDrawColor(200, 200, 200);
+  doc.line(margin, actionItemsY + 3, margin + 110, actionItemsY + 3);
+  
+  doc.setFontSize(10);
+  doc.setTextColor(80, 80, 80);
+  
+  let actions = [];
+  if (riskLevel >= 80) {
+    actions = [
+      "• Schedule immediate maintenance within 24 hours",
+      "• Isolate equipment if possible to prevent further damage",
+      "• Order replacement parts identified as potential failure points",
+      "• Assign highest priority to this device in maintenance queue"
+    ];
+  } else if (riskLevel >= 50) {
+    actions = [
+      "• Schedule maintenance within the next 7 days",
+      "• Monitor device performance daily",
+      "• Review operational logs for any anomalies",
+      "• Prepare replacement parts for upcoming maintenance"
+    ];
+  } else {
+    actions = [
+      "• Continue with regular maintenance schedule",
+      "• Monitor device during routine checks",
+      "• Document any minor issues for future reference",
+      "• No immediate action required"
+    ];
+  }
+  
+  actions.forEach((action, i) => {
+    doc.text(action, margin + 5, actionItemsY + 15 + (i * 7));
+  });
+  
+  // Device parameters section
+  const paramsY = actionItemsY + 15 + (actions.length * 7) + 15;
+  doc.setFontSize(16);
+  doc.setTextColor(31, 58, 147);
+  doc.text("EQUIPMENT PARAMETERS", margin, paramsY);
+  doc.setDrawColor(200, 200, 200);
+  doc.line(margin, paramsY + 3, margin + 110, paramsY + 3);
+  
+  // Prepare device parameters table
+  const tableColumn = ["Parameter", "Value"];
+  const tableRows = [];
+  
+  // Only include parameters with meaningful values
+  Object.entries(dashboardData.inputSnapshot).forEach(([key, value]) => {
+    if (value !== null && value !== undefined && value !== "" && value !== 0 && value !== "0") {
+      const formattedKey = key
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, l => l.toUpperCase());
+      
+      tableRows.push([formattedKey, value]);
+    }
+  });
+  
+  // Generate the table
+  autoTable(doc, {
+    startY: paramsY + 10,
+    head: [tableColumn],
+    body: tableRows,
+    theme: 'grid',
+    headStyles: {
+      fillColor: [31, 58, 147],
+      textColor: [255, 255, 255],
+      fontStyle: 'bold',
+      fontSize: 10
+    },
+    bodyStyles: {
+      fontSize: 9
+    },
+    alternateRowStyles: {
+      fillColor: [241, 245, 249]
+    },
+    styles: {
+      cellPadding: 3,
+      lineColor: [200, 200, 200]
+    },
+    margin: { left: margin, right: margin }
+  });
+  
+  // Add key insights box if there's space
+  const finalY = doc.lastAutoTable.finalY + 10;
+  if (finalY < pageHeight - 60) {
+    doc.setFillColor(241, 245, 249);
+    doc.roundedRect(margin, finalY, contentWidth, 40, 3, 3, 'F');
+    
+    doc.setFontSize(12);
+    doc.setTextColor(31, 58, 147);
+    doc.text("KEY INSIGHTS", margin + 10, finalY + 10);
+    
+    doc.setFontSize(9);
+    doc.setTextColor(100, 100, 100);
+    
+    let insight;
+    if (riskLevel >= 80) {
+      insight = "This device shows critical failure indicators. Immediate attention is required to prevent operational disruption.";
+    } else if (riskLevel >= 50) {
+      insight = "This device shows early warning signs. Proactive maintenance will prevent future failures and extend equipment life.";
+    } else {
+      insight = "This device is operating within normal parameters. Continue with regular maintenance schedule.";
+    }
+    
+    const splitInsight = doc.splitTextToSize(insight, contentWidth - 20);
+    doc.text(splitInsight, margin + 10, finalY + 20);
+  }
+  
+  // Add footer
+  doc.setDrawColor(200, 200, 200);
+  doc.line(margin, pageHeight - 20, pageWidth - margin, pageHeight - 20);
+  
+  doc.setFontSize(8);
+  doc.setTextColor(150, 150, 150);
+  doc.text("Generated by MedPredict AI Maintenance System", pageWidth / 2, pageHeight - 12, { align: 'center' });
+  doc.text("Confidential - For Authorized Personnel Only", pageWidth / 2, pageHeight - 6, { align: 'center' });
+  
+  // Save the PDF
+  const fileName = `MedPredict_Report_${dashboardData.org.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
+  doc.save(fileName);
+};
 
   return (
     <div className="p-4 bg-[#e9ecef] min-h-screen">
