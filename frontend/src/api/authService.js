@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'sunny-delight-production-bc92.up.railway.app'; // Your backend URL
+const API_URL = 'https://sunny-delight-production-bc92.up.railway.app'; // Your backend URL
 
 const api = axios.create({
   baseURL: API_URL,
