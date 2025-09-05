@@ -40,14 +40,10 @@ import errorHandler from "./middleware/errorHandler.js";
 const app = express();
 app.use(
   cors({
-  origin: function (origin, callback) {
-    // allow server-to-server requests (like curl) with no Origin header
-    if (!origin) return callback(null, true);
-    if (baseUrls.includes(origin)) return callback(null, true);
-    return callback(new Error("CORS not allowed: " + origin), false);
-  },
-  credentials: true,
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    origin: "http://localhost:5173",
+    credentials: true,
+  })
+);
 app.use(express.json());
 
 // --- CORRECTED ROUTING ---
