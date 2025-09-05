@@ -605,6 +605,8 @@
 # def read_root():
 #     return {"status": "MedPredict ML Service is running."}
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 from pydantic import BaseModel, Field
 import pandas as pd
 import joblib
@@ -619,7 +621,15 @@ app = FastAPI(
     description="An API to predict medical device failure, providing a probability score and a maintenance recommendation.",
     version="2.0.5"
 )
+origins = ["*"] # Allow all origins for now
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 # Define the path to the trained model.
 MODEL_PATH = os.path.join("models", "final_xgboost_model.pkl")
 MODEL_VERSION = "2.0.5" # Updated version
