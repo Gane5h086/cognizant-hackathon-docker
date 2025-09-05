@@ -40,7 +40,7 @@ import errorHandler from "./middleware/errorHandler.js";
 const app = express();
 app.use(
   cors({
-    origin: "https://medpredict-theta.vercel.app/",
+    origin: "https://medpredict-theta.vercel.app",
     credentials: true,
   })
 );
