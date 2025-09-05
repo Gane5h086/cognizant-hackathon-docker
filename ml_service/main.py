@@ -734,6 +734,8 @@ def predict(data: DeviceInputData):
         }
 
     except Exception as e:
+                
+        print(str(e))
 
         raise HTTPException(status_code=500, detail=f"An error occurred during prediction: {str(e)}")
 
