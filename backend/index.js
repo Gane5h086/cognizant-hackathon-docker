@@ -38,12 +38,19 @@ import predictionRouter from "./routes/predictionRoutes.js"; // Import the new r
 import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
+// app.use(
+//   cors({
+//     origin: "https://medpredict-theta.vercel.app",
+//     credentials: true,
+//   })
+// );
 app.use(
   cors({
-    origin: "https://medpredict-theta.vercel.app",
-    credentials: true,
+    origin: "*",
   })
 );
+
+
 app.use(express.json());
 
 // --- CORRECTED ROUTING ---
