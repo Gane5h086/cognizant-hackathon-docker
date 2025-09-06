@@ -38,11 +38,11 @@ import predictionRouter from "./routes/predictionRoutes.js"; // Import the new r
 import errorHandler from "./middleware/errorHandler.js";
 
 const app = express();
-// app.use(
-//   cors({
-//     origin: "https://medpredict-theta.vercel.app",
-//     credentials: true,
-//   })
+app.use(
+  cors({
+    origin: "https://medpredict-theta.vercel.app",
+    credentials: true,
+  })
 // );
 // app.use(
 //   cors({
@@ -50,18 +50,18 @@ const app = express();
 //   })
 // );
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // allow requests with no origin (like Postman)
-      if (!origin) return callback(null, true);
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // allow requests with no origin (like Postman)
+//       if (!origin) return callback(null, true);
 
-      // allow any origin
-      return callback(null, true);
-    },
-    credentials: true, // allow cookies/auth headers
-  })
-);
+//       // allow any origin
+//       return callback(null, true);
+//     },
+//     credentials: true, // allow cookies/auth headers
+//   })
+// );
 
 
 app.use(express.json());
