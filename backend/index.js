@@ -44,9 +44,22 @@ const app = express();
 //     credentials: true,
 //   })
 // );
+// app.use(
+//   cors({
+//     origin: "*",
+//   })
+// );
+
 app.use(
   cors({
-    origin: "*",
+    origin: function (origin, callback) {
+      // allow requests with no origin (like Postman)
+      if (!origin) return callback(null, true);
+
+      // allow any origin
+      return callback(null, true);
+    },
+    credentials: true, // allow cookies/auth headers
   })
 );
 
