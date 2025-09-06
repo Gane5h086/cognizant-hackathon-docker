@@ -43,6 +43,7 @@ app.use(
     origin: "https://medpredict-theta.vercel.app",
     credentials: true,
   })
+);
 // );
 // app.use(
 //   cors({
