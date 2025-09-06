@@ -16,16 +16,6 @@ export const signup = async (req, res, next) => {
     if (existingUser) {
       return next(new ApiError(400, "User already exists"));
     }
-//console-logging-mobile
-  console.log('[signup] headers:', req.headers);
-  console.log('[signup] body:', req.body);
-
-  const { firstName, email, password } = req.body || {};
-  if (!firstName || !email || !password) {
-    console.warn('[signup] bad input');
-    return res.status(400).json({ success: false, message: 'firstName, email and password are required' });
-}
-//console-logging-end
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({
