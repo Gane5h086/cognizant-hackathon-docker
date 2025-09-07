@@ -92,9 +92,9 @@ export const forgotPassword = async (req, res, next) => {
   const { email, organization } = req.body;
 
   try {
-    const user = await User.findOne({ email, organization });
+    const user = await User.findOne({ email,});
     if (!user) {
-      return next(new ApiError(404, "If the email and organization match our records, a password reset code will be sent."));
+      return next(new ApiError(404, "If the email matches our records, a password reset code will be sent to it."));
     }
 
     const resetCode = crypto.randomInt(100000, 999999).toString();
